@@ -1,0 +1,81 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% CLASS DEFINITION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Input #1 - Set "language": DE (german), EN (english)
+% Input #2 - Set "layout" (twoside?): true, false
+% Input #3 - Set "type": project, bachelor, master, phd
+% Input #4 - Set "institute": ude-es, ude-ebs, uke-ikim
+% Input #5 - Set "offset" (8mm - 14mm)
+% Input #6 - Set "watermark": string
+\documentclass[
+    language=EN,
+    twoside=false, 
+    type=master,
+    institute=ude-es,
+    offset=10mm,
+    watermark=DRAFT
+]{classthesis}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% CONFIGURATION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\renewcommand{\PathGroupLogo}{}
+\renewcommand{\PathBackPic}{}
+
+\renewcommand{\AuthorNameOne}{Max Mustermann}
+\renewcommand{\AuthorMatrNoOne}{3000000}
+\renewcommand{\AuthorStudy}{Betriebswirtschaftslehre}
+\renewcommand{\ThesisTitle}{Beispiel zum Verfassen einer Abschlussarbeit in \LaTeX}
+\renewcommand{\ThesisLocation}{Duisburg}
+\renewcommand{\DateSubmission}{09.07.2023}
+\renewcommand{\ThesisSupervisor}{Klaus Mustermann}
+\renewcommand{\ThesisExaminerOne}{Prof. Dr. Barbara Mustermann}
+\renewcommand{\ThesisExaminerTwo}{Prof. Dr. Albert Einstein}
+
+% --- Infos for doctoral thesis (type=phd)
+\renewcommand{\AuthorPlaceOfBirth}{Musterstadt}
+\renewcommand{\DateOralExam}{01.01.2023}
+\renewcommand{\DoctorType}{Naturwissenschaften}
+\renewcommand{\ThesisAccepted}{ja}		
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Beginning of the Document
+% Tutorial: http://alexanderfabisch.github.io/latex-for-dissertations.html
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\bibliography{libary}
+\renewcommand\bibfont{\footnotesize}
+
+\begin{document}
+	\maketitle
+	% --- FRONT MATTER
+    \frontmatter
+    \makeerklaerung
+    %\include{body/0thanks}
+    \include{body/0taskthesis}
+    \include{body/0abstract}	
+    \pdfbookmark[0]{\contentsname}{tocbasic}
+	\tableofcontents
+	\listoffigures	    
+	\listoftables
+    \include{body/0acronym}
+    \input{body/0formelzeichen}
+    % ------------------ CONTENT
+    \mainmatter
+    \include{body/ch0_introduction}
+    \include{body/ch1_basics}
+    \include{body/ch2_hardware}
+    \include{body/ch3_evaluation}
+    \include{body/ch4_conclusion}
+    % ------------------ BIBLIOGRAPHY
+    \backmatter
+    \printbibliography    
+    % ------------------- APPENDIX
+    \appendix
+    \include{body/chX_appendix}
+    % Template (can be disabled)
+    \include{body/app_structure}
+    \include{body/app_tutorial}
+\end{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% End of Document 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
