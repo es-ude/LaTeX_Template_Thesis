@@ -35,7 +35,6 @@
 
 % --- Input parameters forthis Document
 \newcommand{\PathGroupLogo}{}
-\newcommand{\PathBackPic}{}
 \newcommand{\SetBackTransparency}{0.2}
 \newcommand{\SetBackWidthRatio}{0.5}
  
@@ -81,6 +80,7 @@
 % --- Loading Packages
 \RequirePackage{blindtext}
 \RequirePackage{ifthen}
+\RequirePackage{lmodern}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%  Optionen deklarieren
@@ -155,18 +155,18 @@
 }
 % Aussehen der Kopfzeile und Fußzeile
 \RequirePackage[headsepline=1pt]{scrlayer-scrpage}
+\RequirePackage{scrhack}
 \renewcommand{\chaptermark}[1]{\markboth{#1}{}}
 \clearpairofpagestyles
 \renewcommand{\chaptermark}[1]{\markboth{ \thechapter\ #1}{}}  
 \renewcommand{\sectionmark}[1]{\markright{ \thesection\ #1}{}} 
 \renewcommand{\chapterpagestyle}{empty}	        % Bei Kapitelanfängen keine Seitenzahl   
-%\renewcommand*{\chaptermarkformat}{}            % Kapitelnummerierung in der Kopfzeile aus (Funktioniert nicht!)
 \setkomafont{pagenumber}{\normalfont\bfseries}  % Seitenzahl in fett
 
  % --- Wasserzeichensetzen
 \RequirePackage[firstpage]{draftwatermark}
 \SetWatermarkText{\textsc{\classthesis@watermark}}
-\SetWatermarkScale{2.6}
+\SetWatermarkScale{0.8}
 \SetWatermarkAngle{55}
 \SetWatermarkLightness{0.85}
 
@@ -344,21 +344,6 @@
 }
 }{}
 
-% Einfügen von transparentem Hintergrundbild für Titelblatt
-\RequirePackage{eso-pic}
-\newcommand\BackgroundPic{
-    \ifthenelse{\equal{\PathBackPic}{}}{}{
-        \put(0,0){
-            \parbox[b][\paperheight]{\paperwidth}{
-            \vfill  \centering
-            {\transparent{\SetBackTransparency} \hspace{\classthesis@offset} \includegraphics[width=\SetBackWidthRatio\textwidth,
-    keepaspectratio]{\PathBackPic}}
-            \vfill
-            }
-        }
-    }
-}
-
 % Angabe des Pfades
 \graphicspath{{./figures/}}
 
@@ -446,21 +431,74 @@
     \end{flushleft}
 }
 
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Matter-Anpassungen
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\LangDistanceText}{2}
+% --- Design of the main chapter sides 
+\renewcommand*{\@@makechapterhead}[1]{
+    \vspace*{\LangDistanceText\p@}
+    {\parindent \z@ \raggedleft \reset@font
+        \scshape
+        \par\nobreak
+        \interlinepenalty\@M
+        \ifthenelse{\equal{\LangDistanceText}{10}}{}{\Large \textsc{\LangChapName~\thechapter}\\}
+        \Huge \bfseries \textsc{#1} \par\nobreak
+        \hrulefill
+        \par\nobreak
+        \vskip 6\p@
+    }    
+}
+% --- Design of appendix chapter sides
+\renewcommand*{\@@makeschapterhead}[1]{
+    \vspace*{2\p@}
+    {\parindent \z@ \raggedleft \reset@font
+        \scshape
+        \par\nobreak
+        \interlinepenalty\@M
+        \Huge \bfseries \scshape{#1} \par\nobreak
+        \hrulefill
+        \par\nobreak
+        \vskip 2\p@
+    }
+}
+
+% --- Design of the matter
+\renewcommand{\frontmatter}{
+    \cleardoublepage
+    \pagestyle{scrheadings}
+    \pagenumbering{roman}
+    \singlespacing
+    \renewcommand{\LangDistanceText}{2}
+}
+
+\renewcommand{\mainmatter}{
+    \cleardoublepage
+    \pagestyle{scrheadings}
+    \pagenumbering{arabic}
+    \onehalfspacing
+    \renewcommand{\LangDistanceText}{340}
+}
+
+\renewcommand{\backmatter}{
+    \cleardoublepage
+    \pagestyle{scrheadings}
+    \singlespacing
+    \renewcommand{\LangDistanceText}{10}
+}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Anpassungen am Deckblatt
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\makeatletter
 \renewcommand{\maketitle}{
 \begin{titlepage}
     \pagestyle{empty}
-    % --- Einfügen eines Hintergrundbilds
-    \AddToShipoutPicture*{\BackgroundPic}
     % --- Inhalt der Titelseite
     % Einfügen der Logos
     \singlespacing
     \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lr}
 	   \ifthenelse{\equal{\PathGroupLogo}{}}{}{\includegraphics[height={20mm}, clip]{Logos/\PathGroupLogo}}  
-      & \includesvg[height={\PathCompanyLogoHeight}]{Logos/\PathCompanyLogo} 
+      %& \includesvg[height={\PathCompanyLogoHeight}]{Logos/\PathCompanyLogo} 
     \end{tabular*}
 	% --- Textkörper
     \ifthenelse{\equal{\ThesisType}{Dissertation}}{
@@ -539,58 +577,6 @@
     \end{titlepage}
 }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Matter-Anpassungen
+%% Anpassungen an Andere
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand{\LangDistanceText}{2}
-% --- Design of the main chapter sides 
-\def\@makechapterhead#1{
-    \vspace*{\LangDistanceText\p@}
-    {\parindent \z@ \raggedleft \reset@font
-        \scshape
-        \par\nobreak
-        \interlinepenalty\@M
-        \ifthenelse{\equal{\LangDistanceText}{10}}{}{\Large \LangChapName~\thechapter\\}
-        \Huge \bfseries #1\par\nobreak
-        \hrulefill
-        \par\nobreak
-        \vskip 6\p@
-    }    
-}
-% --- Design of appendix chapter sides
-\def\@makeschapterhead#1{
-    \vspace*{2\p@}
-    {\parindent \z@ \raggedleft \reset@font
-        \scshape
-        \par\nobreak
-        \interlinepenalty\@M
-        \Huge \bfseries #1\par\nobreak
-        \hrulefill
-        \par\nobreak
-        \vskip 2\p@
-    }
-}
-
-% --- Design of the matter
-\renewcommand{\frontmatter}{
-    \cleardoublepage
-    \pagestyle{scrheadings}
-    \pagenumbering{roman}
-    \singlespacing
-    \renewcommand{\LangDistanceText}{2}
-}
-
-\renewcommand{\mainmatter}{
-    \cleardoublepage
-    \pagestyle{scrheadings}
-    \pagenumbering{arabic}
-    \onehalfspacing
-    \renewcommand{\LangDistanceText}{340}
-}
-
-\renewcommand{\backmatter}{
-    \cleardoublepage
-    \pagestyle{scrheadings}
-    \singlespacing
-    \renewcommand{\LangDistanceText}{10}
-}
 \makeatother
