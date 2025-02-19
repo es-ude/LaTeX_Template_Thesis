@@ -1,8 +1,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
 %% Title:   LaTeX-Klasse zur Erstellung von Abschlussarbeiten
-%% Version: 1.3
-%% Stand:   03.05.2024
+%% Version: 1.4
+%% Stand:   12.02.2025
 %% Author:  Andreas Erbslöh
 %% Company: UDE-ES
 %% Input:   Erste Werte als Default
@@ -12,7 +12,7 @@
 %%          #4: Institute (ude-es, ude-ebs)
 %%.         #5: Offset auf Innenseite des Drucks (10mm, 8-14 mm)
 %%.         #6: Wasserschutzzeichentext
-%%
+%% Compile: LaTeX, 2023
 %% ToDo:    - XeTex verwenden, Neue Funktion für psfrag finden (pstool for pdfLaTeX)
 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -25,6 +25,7 @@
 	prefix=classthesis@
 }
 %% Set default values of global options
+\DeclareStringOption[11pt]{fontsize}
 \DeclareStringOption[DE]{language}
 \DeclareStringOption[bachelor]{type}
 \DeclareStringOption[ude-es]{institute}
@@ -35,9 +36,7 @@
 
 % --- Input parameters forthis Document
 \newcommand{\PathGroupLogo}{}
-\newcommand{\SetBackTransparency}{0.2}
-\newcommand{\SetBackWidthRatio}{0.5}
- 
+
 \newcommand{\AuthorNameOne}{Max Mustermann}
 \newcommand{\AuthorMatrNoOne}{3000000}
 \newcommand{\AuthorNameTwo}{}
@@ -68,7 +67,7 @@
 \ProcessOptions\relax
 \LoadClass[
     a4paper,                         % Papierformat
-    11pt,					         % Schriftgröße
+    \classthesis@fontsize,	         % Schriftgröße
     twoside=\classthesis@twoside,	 % Layout definieren (ein- oder zweiseitig)
     open=right,				         % Kapitel können auf linken/rechten Seiten beginnen
     chapterprefix,			% Zusatz von Kapitel beim Text einfügen
@@ -80,7 +79,6 @@
 % --- Loading Packages
 \RequirePackage{blindtext}
 \RequirePackage{ifthen}
-\RequirePackage{lmodern}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%  Optionen deklarieren
@@ -107,7 +105,7 @@
     \newcommand{\InfoDepartment}{Allgemeine Informatik}
     \newcommand{\InfoOrganisation}{Fachgebiet}
     \newcommand{\InfoInstitution}{Intelligente Eingebettete Systeme}
-    \newcommand{\PathCompanyLogo}{signet_ude_rgb.svg}
+    \newcommand{\PathCompanyLogo}{logo_ude.eps}
     \newcommand{\PathCompanyLogoHeight}{20mm}
 }{}
 \ifthenelse{\equal{\classthesis@institute}{ude-ebs}}{ 
@@ -116,17 +114,8 @@
     \newcommand{\InfoDepartment}{Elektro- und Informationstechnik}
     \newcommand{\InfoOrganisation}{Fachgebiet}
     \newcommand{\InfoInstitution}{Elektronische Bauelemente und Schaltungen}
-    \newcommand{\PathCompanyLogo}{signet_ude_rgb.svg}
+    \newcommand{\PathCompanyLogo}{logo_ude.eps}
     \newcommand{\PathCompanyLogoHeight}{20mm}
-}{}
-\ifthenelse{\equal{\classthesis@institute}{uke-ikim}}{ 
-    \newcommand{\InfoUniversity}{Universitätsklinikum Essen}
-    \newcommand{\InfoFaculty}{}
-    \newcommand{\InfoDepartment}{}
-    \newcommand{\InfoOrganisation}{Institut}
-    \newcommand{\InfoInstitution}{Institut für Künstliche Intelligenz in der Medizin}
-    \newcommand{\PathCompanyLogo}{logo_uke_rgb.svg}
-    \newcommand{\PathCompanyLogoHeight}{14mm}
 }{}
 }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -166,7 +155,7 @@
  % --- Wasserzeichensetzen
 \RequirePackage[firstpage]{draftwatermark}
 \SetWatermarkText{\textsc{\classthesis@watermark}}
-\SetWatermarkScale{0.8}
+\SetWatermarkScale{1.8}
 \SetWatermarkAngle{55}
 \SetWatermarkLightness{0.85}
 
@@ -311,7 +300,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Konfiguration der Abbbildungen und Tabellen
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage{svg, graphicx} 
+\RequirePackage{graphicx} 
 \RequirePackage[position=bottom, font=normal, 
     justification=raggedright, singlelinecheck=false, 
     farskip=2pt, captionskip=-6pt
@@ -498,7 +487,7 @@
     \singlespacing
     \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lr}
 	   \ifthenelse{\equal{\PathGroupLogo}{}}{}{\includegraphics[height={20mm}, clip]{Logos/\PathGroupLogo}}  
-      %& \includesvg[height={\PathCompanyLogoHeight}]{Logos/\PathCompanyLogo} 
+      & \includegraphics[height={\PathCompanyLogoHeight}, clip]{Logos/\PathCompanyLogo} 
     \end{tabular*}
 	% --- Textkörper
     \ifthenelse{\equal{\ThesisType}{Dissertation}}{
