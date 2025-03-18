@@ -2,24 +2,33 @@
 % CLASS DEFINITION
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Input #1 - Set "language": DE (german), EN (english)
-% Input #2 - Set "layout" (twoside?): true, false
+% Input #2 - Set "twoside": true, false
 % Input #3 - Set "type": project, bachelor, master, phd
-% Input #4 - Set "institute": ude-es, ude-ebs, uke-ikim
+% Input #4 - Set "showTutorial": true, false
 % Input #5 - Set "offset" (8mm - 14mm)
 % Input #6 - Set "watermark": string
 \documentclass[
     language=EN,
     twoside=false, 
     type=master,
-    institute=ude-es,
+    showTutorial=true,
     offset=10mm,
     watermark=DRAFT
 ]{classthesis}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % CONFIGURATION
+% Please delete unneccessary renewcommands or enable them 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \renewcommand{\PathGroupLogo}{}
+% --- Information of Institution 
+%\renewcommand{\InfoUniversity}{Universität Duisburg-Essen}
+%\renewcommand{\InfoFaculty}{Informatik}
+%\renewcommand{\InfoDepartment}{Allgemeine Informatik}
+%\renewcommand{\InfoOrganisation}{Fachgebiet}
+%\renewcommand{\InfoInstitution}{Intelligente Eingebettete Systeme}
+%\renewcommand{\PathCompanyLogo}{logo_ude.eps}
 
+% --- User Information
 \renewcommand{\AuthorNameOne}{Max Mustermann}
 \renewcommand{\AuthorMatrNoOne}{3000000}
 \renewcommand{\AuthorStudy}{Betriebswirtschaftslehre}
@@ -34,7 +43,7 @@
 \renewcommand{\AuthorPlaceOfBirth}{Musterstadt}
 \renewcommand{\DateOralExam}{01.01.2023}
 \renewcommand{\DoctorType}{Naturwissenschaften}
-\renewcommand{\ThesisAccepted}{ja}		
+\renewcommand{\ThesisAccepted}{false}		
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Beginning of the Document
@@ -44,8 +53,8 @@
 \renewcommand\bibfont{\footnotesize}
 
 \begin{document}
-	\maketitle
-	% --- FRONT MATTER
+    \maketitle
+    % --- FRONT MATTER
     \frontmatter
     \makeerklaerung
     %\include{body/0thanks}
@@ -61,18 +70,16 @@
     \mainmatter
     \include{body/ch0_introduction}
     \include{body/ch1_basics}
-    \include{body/ch2_hardware}
-    \include{body/ch3_evaluation}
-    \include{body/ch4_conclusion}
+    \include{body/ch2_concept}
+    \include{body/ch3_implementation}
+    \include{body/ch4_evaluation}
+    \include{body/ch5_conclusion}
     % ------------------ BIBLIOGRAPHY
     \backmatter
     \printbibliography    
     % ------------------- APPENDIX
     \appendix
     \include{body/chX_appendix}
-    % Template (can be disabled)
-    \include{body/app_structure}
-    \include{body/app_tutorial}
 \end{document}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

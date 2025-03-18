@@ -28,7 +28,7 @@
 \DeclareStringOption[11pt]{fontsize}
 \DeclareStringOption[DE]{language}
 \DeclareStringOption[bachelor]{type}
-\DeclareStringOption[ude-es]{institute}
+\DeclareStringOption[false]{showTutorial}
 \DeclareStringOption[10mm]{offset}
 \DeclareStringOption[false]{twoside}
 \DeclareStringOption[]{watermark}
@@ -57,11 +57,19 @@
 \newcommand{\ThesisExaminerOne}{Prof. Dr. Barbara Mustermann}
 \newcommand{\ThesisExaminerTwo}{Prof. Dr. Albert Einstein}
 
+\newcommand{\InfoUniversity}{Universität Duisburg-Essen}
+\newcommand{\InfoFaculty}{Informatik}
+\newcommand{\InfoDepartment}{Allgemeine Informatik}
+\newcommand{\InfoOrganisation}{Fachgebiet}
+\newcommand{\InfoInstitution}{Intelligente Eingebettete Systeme}
+\newcommand{\PathCompanyLogo}{logo_ude.eps}
+\newcommand{\PathCompanyLogoHeight}{20mm}
+
 \newcommand{\AuthorStudy}{Fancy-Design}
 \newcommand{\AuthorPlaceOfBirth}{Musterstadt}
 \newcommand{\DateOralExam}{\today}
 \newcommand{\DoctorType}{Naturwissenschaften}
-\newcommand{\ThesisAccepted}{nein}	
+\newcommand{\ThesisAccepted}{false}	
 \newcommand{\DateListAITools}{09.12.2024}
 
 % --- Start processing
@@ -82,9 +90,8 @@
 \RequirePackage{ifthen}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%  Optionen deklarieren
+%%  Declaration of Options
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% --- Typ der Arbeit
 \AtBeginDocument{
 \ifthenelse{\equal{\classthesis@type}{project}}{
     \newcommand{\ThesisType}{Projekt}
@@ -98,38 +105,15 @@
 \ifthenelse{\equal{\classthesis@type}{phd}}{
     \newcommand{\ThesisType}{Dissertation}
 }{}
+}
 
-% --- Institution
-\ifthenelse{\equal{\classthesis@institute}{ude-es}}{
-   \newcommand{\InfoUniversity}{Universität Duisburg-Essen}
-    \newcommand{\InfoFaculty}{Informatik}
-    \newcommand{\InfoDepartment}{Allgemeine Informatik}
-    \newcommand{\InfoOrganisation}{Fachgebiet}
-    \newcommand{\InfoInstitution}{Intelligente Eingebettete Systeme}
-    \newcommand{\PathCompanyLogo}{logo_ude.eps}
-    \newcommand{\PathCompanyLogoHeight}{20mm}
-}{}
-\ifthenelse{\equal{\classthesis@institute}{ude-ebs}}{ 
-    \newcommand{\InfoUniversity}{Universität Duisburg-Essen}
-    \newcommand{\InfoFaculty}{Ingenieurwissenschaften}
-    \newcommand{\InfoDepartment}{Elektro- und Informationstechnik}
-    \newcommand{\InfoOrganisation}{Fachgebiet}
-    \newcommand{\InfoInstitution}{Elektronische Bauelemente und Schaltungen}
-    \newcommand{\PathCompanyLogo}{logo_ude.eps}
-    \newcommand{\PathCompanyLogoHeight}{20mm}
+\AtEndDocument{
+\ifthenelse{\equal{\classthesis@showTutorial}{true}}{
+    \include{body/0tutorial}
 }{}
 }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% LaTeX Logo
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\begin{textblock}{16.5}(2.8,2.6)
-% \hspace*{-0.25cm} \textbf{UNIVERSITÄT DUISBURG-ESSEN} \\
-% \hspace*{-1.15cm} \rule{5mm}{5mm} \hspace*{0.05cm} FAKULTÄT FÜR INGENIEURWISSENSCHAFTEN\\
-% \large{}ABTEILUNG INFORMATIK UND ANGEWANDTE KOGNITIONSWISSENSCHAFT\\
-%\end{textblock}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Layout inkl. Kopf- und Fußzeile	                           
+%% Layout incl. Head- und Footline	                           
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage{lscape}
 \RequirePackage{geometry}
@@ -273,6 +257,13 @@
     hidden neuron/.style={neuron, fill=blue!40},
     output neuron/.style={neuron, fill=red!40, pin={[pin edge={->}]right: }}
 }
+
+\usetikzlibrary{calc, arrows.meta, intersections, patterns, positioning, shapes.misc, fadings, through,decorations.pathreplacing}
+\definecolor{MidnightBlue}{HTML}{006795}
+\definecolor{RedOrange}{HTML}{F26035}
+\definecolor{Plum}{HTML}{92268F}
+\definecolor{Dandelion}{HTML}{00CD00}
+
 
 % --- Definition of Plot Generation
 \RequirePackage{pgfplots}
@@ -499,7 +490,7 @@
         {\huge\textbf{\textsc{\ThesisTitle}}}\\
         \vspace*{\fill}
         \singlespacing
-        {\large \ifthenelse{\equal{\ThesisAccepted}{ja}}{Von der}{Der} Fakultät für \InfoFaculty,}\\
+        {\large \ifthenelse{\equal{\ThesisAccepted}{true}}{Von der}{Der} Fakultät für \InfoFaculty,}\\
         \ifthenelse{\equal{\InfoDepartment}{\empty}}{}{\large Abteilung \InfoDepartment,\\}
         {\large der \InfoUniversity}\\
         \vspace*{\fill}
@@ -507,7 +498,7 @@
         \vspace*{\fill}
         {\large Doktor der\\\DoctorType}\\ 
         \vspace*{\fill}
-        {\large \ifthenelse{\equal{\ThesisAccepted}{ja}}{genehmigte}{vorgelegten} Dissertation}\\
+        {\large \ifthenelse{\equal{\ThesisAccepted}{true}}{genehmigte}{vorgelegten} Dissertation}\\
         {\large von}\\
         \vspace*{\fill}
         {\large \AuthorNameOne}\\
@@ -517,7 +508,7 @@
     \vspace*{\fill}
     % Terminangaben 
     \onehalfspacing
-    {\ifthenelse{\equal{\ThesisAccepted}{ja}}{
+    {\ifthenelse{\equal{\ThesisAccepted}{true}}{
         \begin{tabular}{ll}
             Erst-Gutachter:                 & \ThesisExaminerOne\\
             Zweit-Gutachter:                & \ThesisExaminerTwo\\
@@ -547,9 +538,9 @@
         \vspace*{\fill}
         \ifthenelse{\equal{\ThesisType}{Projekt}}{
             \AuthorNameOne~(Mat.-Nr.:~\AuthorMatrNoOne)\\
-            \ifthenelse{\equal{\AuthorNameTwo}{}}{}{\AuthorNameTwo~(Mat.-Nr.:~\AuthorMatrNoTwo)\\}
-            \ifthenelse{\equal{\AuthorNameThree}{}}{}{\AuthorNameThree~(Mat.-Nr.:~\AuthorMatrNoThree)\\}
-            \ifthenelse{\equal{\AuthorNameFour}{}}{}{\AuthorNameFour~(Mat.-Nr.:~\AuthorMatrNoFour)\\}
+            \ifthenelse{\equal{\AuthorNameTwo}{\empty}}{}{\AuthorNameTwo~(Mat.-Nr.:~\AuthorMatrNoTwo)\\}
+            \ifthenelse{\equal{\AuthorNameThree}{\empty}}{}{\AuthorNameThree~(Mat.-Nr.:~\AuthorMatrNoThree)\\}
+            \ifthenelse{\equal{\AuthorNameFour}{\empty}}{}{\AuthorNameFour~(Mat.-Nr.:~\AuthorMatrNoFour)\\}
         }{
         \AuthorNameOne\\ (Mat.-Nr.:~\AuthorMatrNoOne)\\
         }
