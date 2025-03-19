@@ -1,18 +1,18 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
-%% Title:   LaTeX-Klasse zur Erstellung von Abschlussarbeiten
-%% Version: 1.4
-%% Stand:   12.02.2025
+%% Title:   LaTeX Class for Building Thesis Document
+%% Version: 1.5
+%% Stand:   19.03.2025
 %% Author:  Andreas Erbslöh
-%% Company: UDE-ES
-%% Input:   Erste Werte als Default
-%%.         #1: Language (DE, EN) 
+%% Company: UDE-IES
+%% Input:   #1: language (DE, EN) 
 %%          #2: twoside (false, true)
-%%          #3: Thesis-Type (bachelor, master, diss, project)
-%%          #4: Institute (ude-es, ude-ebs)
-%%.         #5: Offset auf Innenseite des Drucks (10mm, 8-14 mm)
-%%.         #6: Wasserschutzzeichentext
-%% Compile: LaTeX, 2023
+%%          #3: thesis type (bachelor, master, phd, project)
+%%          #4: showTutorial (true, false)
+%%.         #5: Offset on inner print site (default: 10mm, use: 8-14 mm)
+%%          #6: Watermark text: string
+%%          #7: Watermark Scaling value: float
+%% Compile: LaTeX, 2024
 %% ToDo:    - XeTex verwenden, Neue Funktion für psfrag finden (pstool for pdfLaTeX)
 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -31,24 +31,23 @@
 \DeclareStringOption[false]{showTutorial}
 \DeclareStringOption[10mm]{offset}
 \DeclareStringOption[false]{twoside}
-\DeclareStringOption[]{watermark}
+\DeclareStringOption[]{watermarkText}
+\DeclareStringOption[2.0]{watermarkScale}
 \ProcessKeyvalOptions*
 
-% --- Input parameters forthis Document
-\newcommand{\PathGroupLogo}{}
-
+% --- Input parameters for this Document
 \newcommand{\AuthorNameOne}{Max Mustermann}
 \newcommand{\AuthorMatrNoOne}{3000000}
-\newcommand{\AuthorNameTwo}{}
-\newcommand{\AuthorMatrNoTwo}{}
-\newcommand{\AuthorNameThree}{}
-\newcommand{\AuthorMatrNoThree}{}
-\newcommand{\AuthorNameFour}{}
-\newcommand{\AuthorMatrNoFour}{}
-\newcommand{\AuthorNameFive}{}
-\newcommand{\AuthorMatrNoFive}{}
-\newcommand{\AuthorNameSix}{}
-\newcommand{\AuthorMatrNoSix}{}
+\newcommand{\AuthorNameTwo}{\empty}
+\newcommand{\AuthorMatrNoTwo}{\empty}
+\newcommand{\AuthorNameThree}{\empty}
+\newcommand{\AuthorMatrNoThree}{\empty}
+\newcommand{\AuthorNameFour}{\empty}
+\newcommand{\AuthorMatrNoFour}{\empty}
+\newcommand{\AuthorNameFive}{\empty}
+\newcommand{\AuthorMatrNoFive}{\empty}
+\newcommand{\AuthorNameSix}{\empty}
+\newcommand{\AuthorMatrNoSix}{\empty}
 
 \newcommand{\ThesisTitle}{Beispiel zum Schreiben einer Abschlussarbeit in \LaTeX}
 \newcommand{\ThesisLocation}{Duisburg}
@@ -64,6 +63,8 @@
 \newcommand{\InfoInstitution}{Intelligente Eingebettete Systeme}
 \newcommand{\PathCompanyLogo}{logo_ude.eps}
 \newcommand{\PathCompanyLogoHeight}{20mm}
+\newcommand{\PathGroupLogo}{\empty}
+\newcommand{\PathGroupLogoHeight}{20mm}
 
 \newcommand{\AuthorStudy}{Fancy-Design}
 \newcommand{\AuthorPlaceOfBirth}{Musterstadt}
@@ -95,22 +96,22 @@
 \AtBeginDocument{
 \ifthenelse{\equal{\classthesis@type}{project}}{
     \newcommand{\ThesisType}{Projekt}
-}{}
+}{\empty}
 \ifthenelse{\equal{\classthesis@type}{bachelor}}{
     \newcommand{\ThesisType}{Bachelor}
-}{}
+}{\empty}
 \ifthenelse{\equal{\classthesis@type}{master}}{
     \newcommand{\ThesisType}{Master}
-}{}
+}{\empty}
 \ifthenelse{\equal{\classthesis@type}{phd}}{
     \newcommand{\ThesisType}{Dissertation}
-}{}
+}{\empty}
 }
 
 \AtEndDocument{
 \ifthenelse{\equal{\classthesis@showTutorial}{true}}{
     \include{body/0tutorial}
-}{}
+}{\empty}
 }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Layout incl. Head- und Footline	                           
@@ -130,17 +131,17 @@
 % Aussehen der Kopfzeile und Fußzeile
 \RequirePackage[headsepline=1pt]{scrlayer-scrpage}
 \RequirePackage{scrhack}
-\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+\renewcommand{\chaptermark}[1]{\markboth{#1}{\empty}}
 \clearpairofpagestyles
-\renewcommand{\chaptermark}[1]{\markboth{ \thechapter\ #1}{}}  
-\renewcommand{\sectionmark}[1]{\markright{ \thesection\ #1}{}} 
+\renewcommand{\chaptermark}[1]{\markboth{ \thechapter\ #1}{\empty}}  
+\renewcommand{\sectionmark}[1]{\markright{ \thesection\ #1}{\empty}} 
 \renewcommand{\chapterpagestyle}{empty}	        % Bei Kapitelanfängen keine Seitenzahl   
 \setkomafont{pagenumber}{\normalfont\bfseries}  % Seitenzahl in fett
 
  % --- Wasserzeichensetzen
 \RequirePackage[firstpage]{draftwatermark}
-\SetWatermarkText{\textsc{\classthesis@watermark}}
-\SetWatermarkScale{1.8}
+\SetWatermarkText{\textsc{\classthesis@watermarkText}}
+\SetWatermarkScale{\classthesis@watermarkScale}
 \SetWatermarkAngle{55}
 \SetWatermarkLightness{0.85}
 
@@ -152,14 +153,14 @@
 }
 
 \ihead[]{\textsc{\SetHeader}} 		            % Header: Innen
-\chead[]{}                                      % Header: Mittig
+\chead[]{\empty}                                      % Header: Mittig
 \ohead[]{\pagemark} 							% Header: Außen
-\ifoot[]{}
-\cfoot[]{}
-\ofoot[]{}
+\ifoot[]{\empty}
+\cfoot[]{\empty}
+\ofoot[]{\empty}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%  Sprachkorrekturen
+%%  Language
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \ifthenelse{\equal{\classthesis@language}{DE}}{
     \RequirePackage[ngerman]{babel}
@@ -171,7 +172,7 @@
     \newcommand{\LangAppendix}{Anhang} 
     \newcommand{\LangThanks}{Danksagung}
     \newcommand{\LangChapName}{Kapitel}
-}{}
+}{\empty}
 \ifthenelse{\equal{\classthesis@language}{EN}}{
     \RequirePackage[english]{babel}
     \newcommand{\LangTask}{Task description}
@@ -180,10 +181,10 @@
     \newcommand{\LangAppendix}{Appendix}
     \newcommand{\LangThanks}{Special Thanks}
     \newcommand{\LangChapName}{Chapter}
-}{}
+}{\empty}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%  Schriftstil
+%%  Font style
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage[utf8]{inputenc}
 \RequirePackage[T1]{fontenc}	                % bessere Silbentrennung
@@ -209,13 +210,13 @@
 \displaywidowpenalty=10000
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%  Einbetten von Software-Codes
+%%  Embedding of code segments
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage{listings}			    % Einbetten von Quellcode
+\RequirePackage{listings}			% Einbetten von Quellcode
 \lstset{ 
   basicstyle=\small,                % text size
   captionpos=b,                     % sets the caption-position to bottom
-  commentstyle=\color{green},     % comment style
+  commentstyle=\color{green},       % comment style
   extendedchars=true,               
   firstnumber=1,                    % start line enumeration with line 1000
   keepspaces=true,                  % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
@@ -317,13 +318,13 @@
 	\renewcommand{\figurename}{Abb.}		
 	\renewcommand{\tablename}{Tab.}	
 }
-}{}
+}{\empty}
 \ifthenelse{\equal{\classthesis@language}{EN}}{
 \addto\captionsngerman{
 	\renewcommand{\figurename}{Fig.}		
 	\renewcommand{\tablename}{Tab.}	
 }
-}{}
+}{\empty}
 
 % Angabe des Pfades
 \graphicspath{{./figures/}}
@@ -385,33 +386,41 @@
     %%%%
     \vspace{1.2cm}
     \begin{flushleft}
+        \ifthenelse{\equal{\classthesis@type}{project}}{
+            \newpage
+        }{\empty}
         {\ThesisLocation,\\
         den \the\day.\the\month.\the\year
         \hspace{1cm} \line(1,0){250}\\
         \hspace{3.6cm} \AuthorNameOne}
-        {\ifthenelse{\equal{\AuthorNameTwo}{}}{}{
+        {\ifthenelse{\equal{\AuthorNameTwo}{\empty}}{\empty}{
         \\[2cm]
-        \hspace{3.3cm} \line(1,0){250}\\
-        \hspace{3.6cm} \AuthorNameTwo}}
-        {\ifthenelse{\equal{\AuthorNameThree}{}}{}{
-        \\[2cm]
-        \hspace{3.3cm} \line(1,0){250}\\
-        \hspace{3.6cm} \AuthorNameThree}}
-        {\ifthenelse{\equal{\AuthorNameFour}{}}{}{
-        \\[2cm]
-        \hspace{3.3cm} \line(1,0){250}\\
-        \hspace{3.6cm} \AuthorNameFour}}
-        {\ifthenelse{\equal{\AuthorNameFive}{}}{}{
-        \\[2cm]
-        \hspace{3.3cm} \line(1,0){250}\\
-        \hspace{3.6cm} \AuthorNameFive}}
-        {\ifthenelse{\equal{\AuthorNameSix}{}}{}{
-        \\[2cm]
-        \hspace{3.3cm} \line(1,0){250}\\
-        \hspace{3.6cm} \AuthorNameSix}}
+        {\ThesisLocation,\\
+        den \the\day.\the\month.\the\year
+        \hspace{1cm} \line(1,0){250}\\
+        \hspace{3.6cm} \AuthorNameTwo}}}
+        {\ifthenelse{\equal{\AuthorNameThree}{\empty}}{\empty}{
+        {\ThesisLocation,\\
+        den \the\day.\the\month.\the\year
+        \hspace{1cm} \line(1,0){250}\\
+        \hspace{3.6cm} \AuthorNameThree}}}
+        {\ifthenelse{\equal{\AuthorNameFour}{\empty}}{\empty}{
+        {\ThesisLocation,\\
+        den \the\day.\the\month.\the\year
+        \hspace{1cm} \line(1,0){250}\\
+        \hspace{3.6cm} \AuthorNameFour}}}
+        {\ifthenelse{\equal{\AuthorNameFive}{\empty}}{\empty}{
+        {\ThesisLocation,\\
+        den \the\day.\the\month.\the\year
+        \hspace{1cm} \line(1,0){250}\\
+        \hspace{3.6cm} \AuthorNameFive}}}
+        {\ifthenelse{\equal{\AuthorNameSix}{\empty}}{\empty}{
+        {\ThesisLocation,\\
+        den \the\day.\the\month.\the\year
+        \hspace{1cm} \line(1,0){250}\\
+        \hspace{3.6cm} \AuthorNameSix}}}
     \end{flushleft}
 }
-
 \makeatletter
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Matter-Anpassungen
@@ -424,7 +433,7 @@
         \scshape
         \par\nobreak
         \interlinepenalty\@M
-        \ifthenelse{\equal{\LangDistanceText}{10}}{}{\Large \textsc{\LangChapName~\thechapter}\\}
+        \ifthenelse{\equal{\LangDistanceText}{10}}{\empty}{\Large \textsc{\LangChapName~\thechapter}\\}
         \Huge \bfseries \textsc{#1} \par\nobreak
         \hrulefill
         \par\nobreak
@@ -478,8 +487,8 @@
     % Einfügen der Logos
     \singlespacing
     \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lr}
-	   \ifthenelse{\equal{\PathGroupLogo}{}}{}{\includegraphics[height={20mm}, clip]{Logos/\PathGroupLogo}}  
-      & \includegraphics[height={\PathCompanyLogoHeight}, clip]{Logos/\PathCompanyLogo} 
+	   \ifthenelse{\equal{\PathGroupLogo}{\empty}}{\empty}{\includegraphics[height={\PathGroupLogoHeight}, clip]{\PathGroupLogo}}  
+      & \includegraphics[height={\PathCompanyLogoHeight}, clip]{\PathCompanyLogo} 
     \end{tabular*}
 	% --- Textkörper
     \ifthenelse{\equal{\ThesisType}{Dissertation}}{
@@ -491,7 +500,7 @@
         \vspace*{\fill}
         \singlespacing
         {\large \ifthenelse{\equal{\ThesisAccepted}{true}}{Von der}{Der} Fakultät für \InfoFaculty,}\\
-        \ifthenelse{\equal{\InfoDepartment}{\empty}}{}{\large Abteilung \InfoDepartment,\\}
+        \ifthenelse{\equal{\InfoDepartment}{\empty}}{\empty}{\large Abteilung \InfoDepartment,\\}
         {\large der \InfoUniversity}\\
         \vspace*{\fill}
         {\large zur Erlangung des akademischen Grades}\\
@@ -529,30 +538,28 @@
         \setstretch{1}
         \vspace*{\fill}
         Bearbeitet am\\
-        \ifthenelse{\equal{\InfoOrganisation}{Fachgebiet}}{Fachgebiet }{}\InfoInstitution,\\
-        \ifthenelse{\equal{\InfoFaculty}{\empty}}{}{Fakultät für \InfoFaculty,\\}
-        \ifthenelse{\equal{\InfoDepartment}{\empty}}{}{Abteilung \InfoDepartment,\\}
+        \ifthenelse{\equal{\InfoOrganisation}{Fachgebiet}}{Fachgebiet }{\empty}\InfoInstitution,\\
+        \ifthenelse{\equal{\InfoFaculty}{\empty}}{\empty}{Fakultät für \InfoFaculty,\\}
+        \ifthenelse{\equal{\InfoDepartment}{\empty}}{\empty}{Abteilung \InfoDepartment,\\}
         der \InfoUniversity\\
         \vspace*{\fill}
         von\\
         \vspace*{\fill}
-        \ifthenelse{\equal{\ThesisType}{Projekt}}{
-            \AuthorNameOne~(Mat.-Nr.:~\AuthorMatrNoOne)\\
-            \ifthenelse{\equal{\AuthorNameTwo}{\empty}}{}{\AuthorNameTwo~(Mat.-Nr.:~\AuthorMatrNoTwo)\\}
-            \ifthenelse{\equal{\AuthorNameThree}{\empty}}{}{\AuthorNameThree~(Mat.-Nr.:~\AuthorMatrNoThree)\\}
-            \ifthenelse{\equal{\AuthorNameFour}{\empty}}{}{\AuthorNameFour~(Mat.-Nr.:~\AuthorMatrNoFour)\\}
-        }{
-        \AuthorNameOne\\ (Mat.-Nr.:~\AuthorMatrNoOne)\\
-        }
+        \AuthorNameOne~(Mat.-Nr.:~\AuthorMatrNoOne)\\
+        \ifthenelse{\equal{\AuthorNameTwo}{\empty}}{\empty}{\AuthorNameTwo~(Mat.-Nr.:~\AuthorMatrNoTwo)\\}
+        \ifthenelse{\equal{\AuthorNameThree}{\empty}}{\empty}{\AuthorNameThree~(Mat.-Nr.:~\AuthorMatrNoThree)\\}
+        \ifthenelse{\equal{\AuthorNameFour}{\empty}}{\empty}{\AuthorNameFour~(Mat.-Nr.:~\AuthorMatrNoFour)\\}
+        \ifthenelse{\equal{\AuthorNameFive}{\empty}}{\empty}{\AuthorNameFive~(Mat.-Nr.:~\AuthorMatrNoFive)\\}
+        \ifthenelse{\equal{\AuthorNameSix}{\empty}}{\empty}{\AuthorNameSix~(Mat.-Nr.:~\AuthorMatrNoSix)\\}
     \end{center}
     \vspace*{\fill}
     % --- Zusatzinformationen
     \begin{tabular}{ll} 
-        \ifthenelse{\equal{\ThesisSupervisor}{}}{}{Betreuer:        & \ThesisSupervisor\\}
-        \ifthenelse{\equal{\ThesisExaminerOne}{}}{}{Erst-Gutachter: & \ThesisExaminerOne\\}
-        \ifthenelse{\equal{\ThesisExaminerTwo}{}}{}{Zweit-Gutachter:& \ThesisExaminerTwo\\}
-        \ifthenelse{\equal{\AuthorStudy}{}}{}{Studiengang:          & \AuthorStudy \\}
-        \ifthenelse{\equal{\DateSubmission}{}}{}{Einreichungsdatum: & \DateSubmission}
+        \ifthenelse{\equal{\ThesisSupervisor}{\empty}}{\empty}{Betreuer:        & \ThesisSupervisor\\}
+        \ifthenelse{\equal{\ThesisExaminerOne}{\empty}}{\empty}{Erst-Gutachter: & \ThesisExaminerOne\\}
+        \ifthenelse{\equal{\ThesisExaminerTwo}{\empty}}{\empty}{Zweit-Gutachter:& \ThesisExaminerTwo\\}
+        \ifthenelse{\equal{\AuthorStudy}{\empty}}{\empty}{Studiengang:          & \AuthorStudy \\}
+        \ifthenelse{\equal{\DateSubmission}{\empty}}{\empty}{Einreichungsdatum: & \DateSubmission}
     \end{tabular}
     }
     \end{titlepage}

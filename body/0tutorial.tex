@@ -1,6 +1,8 @@
 \chapter{Good practice for writing theses}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 This \LaTeX templates provides a template to write a thesis. It is just a recommendation based on our experience. But further details should be discussed with your supervisors.
+
+The university, specially the faculty of engineering, provides a document\footnote{\url{https://www.uni-due.de/imperia/md/content/pom/20230201_ueberarbeiteter-leitfaden_abschlussarbeiten.docx}} and homepage\footnote{\url{https://www.uni-due.de/iw/de/abschlussarbeiten.php}} in which the good practice incl. the regulation part is well described. Please have a look on it.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section*{Plagiarism}
 Plagiarism is the appropriation of other people's intellectual achievements without labelling. This can refer to the adoption of third-party texts or other representations or ideas. Plagiarism can, but does not necessarily have to, violate the law: The adoption of third-party texts that are not labelled as quotations is generally an infringement of copyright. The use of other people's ideas can be an infringement of patent rights or design patents. In academia, plagiarism can violate examination regulations, employment contracts or university law. There is a grey area between the unlawful adoption of other people's intellectual work and the legitimate adoption of free or liberated ideas, where plagiarism is considered legal but not legitimate.
@@ -73,7 +75,7 @@ remember to use a \verb+\label{}+.
 %%%
 \begin{figure}[ht]    \centering
     \includegraphics[width=0.35\textwidth]{figures/example.eps}
-    \caption{Timing of an extracellular spike waveform recorded from the MEA}
+    \caption[Include figure with short description for table of figures]{Timing of an extracellular spike waveform recorded from the MEA (just including the figure)}
     \label{fig:NeuronSetup0}
 \end{figure}
 %%%
@@ -94,6 +96,7 @@ You can change the text content of a text string in a vector graphic by using th
     \psfrag{U8}[c][c]{$U_{ext}(t)$}
     \includegraphics[width=0.25\textwidth]{figures/example.eps}
     \label{fig:TutorialNeuron1}
+    \caption{Figure with replaced labels using psfrag}
 \end{figure}
 %%%
 For using it in Overleaf, you have to change the compiler from \verb+pdflatex+ to LaTeX. Otherwise it will not work!
@@ -103,7 +106,7 @@ You can also create figures with several subfigures/subfloats.
 \begin{figure}[ht]    \centering
     \subfloat[]{\includegraphics[width=0.25\textwidth]{figures/example.eps}} \hspace{5mm}
     \subfloat[]{\includegraphics[width=0.25\textwidth]{figures/example.eps}}
-    \caption{Timing of an extracellular spike waveform recorded from the MEA}
+    \caption{Figure include with two subfloats}
     \label{fig:TutorialNeuron2}
 \end{figure}
 %%%
@@ -425,11 +428,11 @@ Using the tikz library, you can also generate time plan tables. Enjoy the exampl
 %% Coordinates
 \coordinate (O) at (-0.5,0);
 \coordinate (P0) at (0,0);
-\coordinate (P1) at (4,0);
-\coordinate (P2) at (8,0);
-\coordinate (P3) at (12,0);
-\coordinate (P4) at (14,0);
-\coordinate (F) at (15.5,0);
+\coordinate (P1) at (3,0);
+\coordinate (P2) at (6,0);
+\coordinate (P3) at (9,0);
+\coordinate (P4) at (12,0);
+\coordinate (F) at (12.5,0);
 %% Main Events
 \fill[color=MidnightBlue!20] rectangle (O) -- (P1) -- ($(P1)+(0,1)$) -- ($(O)+(0,1)$);
 \fill[color=RedOrange!20] rectangle (P1) -- (P2) -- ($(P2)+(0,1)$) -- ($(P1)+(0,1)$);
@@ -485,12 +488,10 @@ Not do something
 \path[->,color=Plum]($(P3)+(-1,-0.1)$)  edge [out=-70, in=90]  ($(D6)+(0,1)$);
 %% Arrow
 \draw[->] (O) -- (F);
-%% Ticks
-\foreach \x in {0,2,...,14}
-\draw(\x cm,3pt) -- (\x cm,-3pt);
-%% Labels
-\foreach \i \j in {0/2024.09,2/2025.03,4/2025.09,6/2026.03,8/2026.09,10/2027.03,12/2027.09,14/2028.03}{
-\draw (\i,0) node[below=3pt] {\j} ;
+%% Ticks and Labels
+\foreach \i \j in {0/2024.09,1.5/2025.03,3/2025.09,4.5/2026.03,6/2026.09,7.5/2027.03,9/2027.09,10.5/2028.03}{
+    \draw(\i cm,3pt) -- (\i cm,-3pt);
+    \draw (\i,0) node[below=3pt] {\j};
 }
 \end{tikzpicture}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
