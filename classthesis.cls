@@ -48,6 +48,14 @@
 \newcommand{\AuthorMatrNoFive}{\empty}
 \newcommand{\AuthorNameSix}{\empty}
 \newcommand{\AuthorMatrNoSix}{\empty}
+\newcommand{\AuthorNameSeven}{\empty}
+\newcommand{\AuthorMatrNoSeven}{\empty}
+\newcommand{\AuthorNameEight}{\empty}
+\newcommand{\AuthorMatrNoEight}{\empty}
+\newcommand{\AuthorNameNine}{\empty}
+\newcommand{\AuthorMatrNoNine}{\empty}
+\newcommand{\AuthorNameTen}{\empty}
+\newcommand{\AuthorMatrNoTen}{\empty}
 
 \newcommand{\ThesisTitle}{Beispiel zum Schreiben einer Abschlussarbeit in \LaTeX}
 \newcommand{\ThesisLocation}{Duisburg}
@@ -397,41 +405,57 @@
 }
 
 \newcommand{\generateSignTable}{
-    \vspace{1.2cm}
+    \vspace{0.8cm}
     \begin{flushleft}
-        \ifthenelse{\equal{\classthesis@type}{project}}{
-            \newpage
-        }{\empty}
         {\ThesisLocation,\\
         den \the\day.\the\month.\the\year
         \hspace{1cm} \line(1,0){250}\\
         \hspace{3.6cm} \AuthorNameOne}
         {\ifthenelse{\equal{\AuthorNameTwo}{\empty}}{\empty}{
-        \\[2cm]
-        {\ThesisLocation,\\
+        {\\[1.5cm]\ThesisLocation,\\
         den \the\day.\the\month.\the\year
         \hspace{1cm} \line(1,0){250}\\
         \hspace{3.6cm} \AuthorNameTwo}}}
         {\ifthenelse{\equal{\AuthorNameThree}{\empty}}{\empty}{
-        {\ThesisLocation,\\
+        {\\[1.5cm]\ThesisLocation,\\
         den \the\day.\the\month.\the\year
         \hspace{1cm} \line(1,0){250}\\
         \hspace{3.6cm} \AuthorNameThree}}}
         {\ifthenelse{\equal{\AuthorNameFour}{\empty}}{\empty}{
-        {\ThesisLocation,\\
+        {\\[1.5cm]\ThesisLocation,\\
         den \the\day.\the\month.\the\year
         \hspace{1cm} \line(1,0){250}\\
         \hspace{3.6cm} \AuthorNameFour}}}
         {\ifthenelse{\equal{\AuthorNameFive}{\empty}}{\empty}{
-        {\ThesisLocation,\\
+        {\\[1.5cm]\ThesisLocation,\\
         den \the\day.\the\month.\the\year
         \hspace{1cm} \line(1,0){250}\\
         \hspace{3.6cm} \AuthorNameFive}}}
         {\ifthenelse{\equal{\AuthorNameSix}{\empty}}{\empty}{
-        {\ThesisLocation,\\
+        {\\[1.5cm]\ThesisLocation,\\
         den \the\day.\the\month.\the\year
         \hspace{1cm} \line(1,0){250}\\
         \hspace{3.6cm} \AuthorNameSix}}}
+        {\ifthenelse{\equal{\AuthorNameSeven}{\empty}}{\empty}{
+        {\\[1.5cm]\ThesisLocation,\\
+        den \the\day.\the\month.\the\year
+        \hspace{1cm} \line(1,0){250}\\
+        \hspace{3.6cm} \AuthorNameSeven}}}
+        {\ifthenelse{\equal{\AuthorNameEight}{\empty}}{\empty}{
+        {\\[1.5cm]\ThesisLocation,\\
+        den \the\day.\the\month.\the\year
+        \hspace{1cm} \line(1,0){250}\\
+        \hspace{3.6cm} \AuthorNameEight}}}
+        {\ifthenelse{\equal{\AuthorNameNine}{\empty}}{\empty}{
+        {\\[1.5cm]\ThesisLocation,\\
+        den \the\day.\the\month.\the\year
+        \hspace{1cm} \line(1,0){250}\\
+        \hspace{3.6cm} \AuthorNameNine}}}
+        {\ifthenelse{\equal{\AuthorNameTen}{\empty}}{\empty}{
+        {\\[1.5cm]\ThesisLocation,\\
+        den \the\day.\the\month.\the\year
+        \hspace{1cm} \line(1,0){250}\\
+        \hspace{3.6cm} \AuthorNameTen}}}
     \end{flushleft}
 }
 \makeatletter
@@ -564,6 +588,10 @@
         \ifthenelse{\equal{\AuthorNameFour}{\empty}}{\empty}{\AuthorNameFour~(Mat.-Nr.:~\AuthorMatrNoFour)\\}
         \ifthenelse{\equal{\AuthorNameFive}{\empty}}{\empty}{\AuthorNameFive~(Mat.-Nr.:~\AuthorMatrNoFive)\\}
         \ifthenelse{\equal{\AuthorNameSix}{\empty}}{\empty}{\AuthorNameSix~(Mat.-Nr.:~\AuthorMatrNoSix)\\}
+        \ifthenelse{\equal{\AuthorNameSeven}{\empty}}{\empty}{\AuthorNameSeven~(Mat.-Nr.:~\AuthorMatrNoSeven)\\}
+        \ifthenelse{\equal{\AuthorNameEight}{\empty}}{\empty}{\AuthorNameEight~(Mat.-Nr.:~\AuthorMatrNoEight)\\}
+        \ifthenelse{\equal{\AuthorNameNine}{\empty}}{\empty}{\AuthorNameNine~(Mat.-Nr.:~\AuthorMatrNoNine)\\}
+        \ifthenelse{\equal{\AuthorNameTen}{\empty}}{\empty}{\AuthorNameTen~(Mat.-Nr.:~\AuthorMatrNoTen)\\}
     \end{center}
     \vspace*{\fill}
     % --- Zusatzinformationen
