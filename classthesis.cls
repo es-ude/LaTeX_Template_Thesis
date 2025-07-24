@@ -64,6 +64,7 @@
 \newcommand{\ThesisExaminerOne}{Prof. Dr. Barbara Mustermann}
 \newcommand{\ThesisExaminerTwo}{Prof. Dr. Albert Einstein}
 
+\newcommand{\InfoStateToolsAI}{16.04.2025}
 \newcommand{\InfoUniversity}{Universität Duisburg-Essen}
 \newcommand{\InfoFaculty}{Informatik}
 \newcommand{\InfoDepartment}{Allgemeine Informatik}
@@ -78,8 +79,7 @@
 \newcommand{\AuthorPlaceOfBirth}{Musterstadt}
 \newcommand{\DateOralExam}{\today}
 \newcommand{\DoctorType}{Naturwissenschaften}
-\newcommand{\ThesisAccepted}{false}	
-\newcommand{\DateListAITools}{09.12.2024}
+\newcommand{\ThesisAccepted}{false}
 
 % --- Start processing
 \ProcessOptions\relax
@@ -397,7 +397,7 @@
 
 \newcommand{\declareEigenstaendig}{
     \chapter*{Eigenständigkeits-Erklärung}
-    Hiermit versichere ich, dass ich diese Arbeit bzw. im Fall einer Gruppenarbeit den von mir entsprechend gekennzeichneten Anteil an der Arbeit selbständig verfasst habe. Ich habe keine unzulässige Hilfe Dritter in Anspruch genommen. Zudem habe ich keine anderen als die angegebenen Quellen und Hilfsmittel benutzt und alle Ausführungen (insbesondere Zitate), die anderen Quellen wörtlich oder sinngemäß entnommen wurden, kenntlich gemacht. Die Liste zugelassener Hilfsmittel vom \DateListAITools~ist mir ausdrücklich bekannt. Ich versichere, dass die von mir in elektronischer Form eingereichte Version dieser Arbeit mit den eingereichten gedruckten Exemplaren übereinstimmt.
+    Hiermit versichere ich, dass ich diese Arbeit bzw. im Fall einer Gruppenarbeit den von mir entsprechend gekennzeichneten Anteil an der Arbeit selbständig verfasst habe. Ich habe keine unzulässige Hilfe Dritter in Anspruch genommen. Zudem habe ich keine anderen als die angegebenen Quellen und Hilfsmittel benutzt und alle Ausführungen (insbesondere Zitate), die anderen Quellen wörtlich oder sinngemäß entnommen wurden, kenntlich gemacht. Die Liste zugelassener Hilfsmittel vom \InfoStateToolsAI~ist mir ausdrücklich bekannt. Ich versichere, dass die von mir in elektronischer Form eingereichte Version dieser Arbeit mit den eingereichten gedruckten Exemplaren übereinstimmt.
 
     Mir ist bekannt, dass sich die Prüferin oder der Prüfer bzw. der Prüfungsausschuss zur Feststellung der Täuschung des Einsatzes einer entsprechenden Software oder sonstiger elektronischer Hilfsmittel bedienen kann.
     %%%%
