@@ -1,0 +1,50 @@
+name: Build PDF
+description: >-
+  Build main.pdf with plain latexmk in the given document language, fail on
+  unresolved references or citations, and upload the PDF and log. Expects a
+  TeX distribution with latexmk, biber and Ghostscript on PATH.
+
+inputs:
+  language:
+    description: Value for the class option `language` (EN or DE).
+    required: true
+  artifact-name:
+    description: Name of the uploaded artifact.
+    required: true
+
+runs:
+  using: composite
+  steps:
+    # main.tex is the file students edit, so the language is switched there
+    # rather than passing class options from outside.
+    - name: Select language ${{ inputs.language }}
+      shell: bash
+      run: |
+        sed -i.bak 's/language=EN/language=${{ inputs.language }}/' main.tex
+        rm main.tex.bak
+        grep -q "language=${{ inputs.language }}," main.tex
+
+    - name: Build
+      shell: bash
+      run: latexmk -interaction=nonstopmode -halt-on-error
+
+    # latexmk exits 0 on unresolved references and citations; fail on those.
+    - name: Check PDF and log
+      shell: bash
+      run: |
+        test -s main.pdf || { echo "::error::main.pdf missing or empty"; exit 1; }
+        test -s main.log || { echo "::error::main.log missing or empty"; exit 1; }
+        if grep -E "LaTeX Warning: (Reference|Citation) .* undefined|There were undefined (references|citations)|Label\(s\) may have changed" main.log; then
+          echo "::error::main.log reports unresolved references or citations"
+          exit 1
+        fi
+
+    - name: Upload PDF
+      if: always()
+      uses: actions/upload-artifact@v7
+      with:
+        name: ${{ inputs.artifact-name }}
+        path: |
+          main.pdf
+          main.log
+        if-no-files-found: error
