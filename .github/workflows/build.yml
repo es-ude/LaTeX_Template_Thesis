@@ -10,6 +10,8 @@ on:
   push:
     branches: [main]
   pull_request:
+  release:
+    types: [published]
   workflow_dispatch:
 
 permissions:
@@ -112,3 +114,25 @@ jobs:
       - name: Fail unless every build succeeded
         if: needs.texlive.result != 'success' || needs.miktex.result != 'success'
         run: exit 1
+
+  # The PDFs are identical across systems; attach the TeX Live Linux builds.
+  release-assets:
+    name: attach PDFs to release
+    needs: all-builds
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          pattern: main-texlive-Linux-*
+      - name: Upload to release ${{ github.event.release.tag_name }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.event.release.tag_name }}
+        run: |
+          for lang in EN DE; do
+            cp "main-texlive-Linux-$lang/main.pdf" "thesis-template-$TAG-$lang.pdf"
+          done
+          gh release upload "$TAG" thesis-template-*.pdf --clobber --repo "$GITHUB_REPOSITORY"
