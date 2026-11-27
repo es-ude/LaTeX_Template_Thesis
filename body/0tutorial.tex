@@ -99,7 +99,7 @@ You can change the text content of a text string in a vector graphic by using th
     \caption{Figure with replaced labels using psfrag}
 \end{figure}
 %%%
-For using it in Overleaf, you have to change the compiler from \verb+pdflatex+ to LaTeX. Otherwise it will not work!
+psfrag only works with the LaTeX compiler (\verb+latex+ $\rightarrow$ \verb+dvips+), not with \verb+pdflatex+, the default of this template. Build with \verb+latexmk -pdfps+ (in Overleaf: change the compiler from \verb+pdfLaTeX+ to LaTeX). Otherwise the original labels are shown. On this route only EPS figures can be included, no PNG, JPG or PDF.
 
 You can also create figures with several subfigures/subfloats.
 %%%
@@ -196,7 +196,7 @@ Generate nice tables with the following example with command \verb+definecolor+ 
 %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Citation}
-If you have some information from other source like scientific papers, please mention this. This \LaTeX-document uses \verb+biblatex+. The file libary.bib includes all papers which you can load via \verb+\cite{}+ and use the following declaration \{Author+Year\}. If you use it, then use \verb+\cite{Lee2021}+ and it appears.
+If you have some information from other source like scientific papers, please mention this. This \LaTeX-document uses \verb+biblatex+. The file library.bib includes all papers which you can load via \verb+\cite{}+ and use the following declaration \{Author+Year\}. If you use it, then use \verb+\cite{Lee2021}+ and it appears.
 \newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Create Tikz diagrams}

@@ -82,6 +82,7 @@
 \newcommand{\ThesisAccepted}{false}
 
 % --- Start processing
+\RequirePackage{fix-cm}                         % scalable fonts at any size (e.g. watermark)
 \ProcessOptions\relax
 \LoadClass[
     a4paper,                         % Papierformat
