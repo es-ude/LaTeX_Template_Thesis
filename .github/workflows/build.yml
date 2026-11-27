@@ -1,0 +1,106 @@
+name: Build PDF
+
+# Proves that the template builds with a plain `latexmk`, in English and
+# German, on the setups students use: TeX Live on Linux, macOS and Windows,
+# and MiKTeX on Windows. The job "all builds passed" is the required check on
+# main; it aggregates all builds so the required name stays stable when the
+# matrix changes.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  texlive:
+    name: texlive (${{ matrix.os }}, ${{ matrix.language }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        language: [EN, DE]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v7
+
+      # Collections instead of single packages: the readme asks for a full TeX
+      # distribution, so a student adding a common package must not turn CI red.
+      - name: Install TeX Live
+        uses: zauguin/install-texlive@v4
+        with:
+          packages: >-
+            scheme-basic
+            collection-latexextra
+            collection-latexrecommended
+            collection-pictures
+            collection-mathscience
+            collection-bibtexextra
+            collection-fontsrecommended
+            collection-langenglish
+            collection-langgerman
+            latexmk
+            biber
+            epstopdf
+
+      # epstopdf needs Ghostscript for the EPS logos. TeX Live ships its own on
+      # Windows only.
+      - name: Install Ghostscript (Linux)
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y ghostscript
+      - name: Install Ghostscript (macOS)
+        if: runner.os == 'macOS'
+        run: brew install ghostscript
+
+      - uses: ./.github/actions/build-pdf
+        with:
+          language: ${{ matrix.language }}
+          artifact-name: main-texlive-${{ runner.os }}-${{ matrix.language }}
+
+  # MiKTeX is what most students install on Windows. It installs missing
+  # packages on first use, like a fresh student installation does.
+  miktex:
+    name: miktex (windows-latest, ${{ matrix.language }})
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [EN, DE]
+    runs-on: windows-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install MiKTeX
+        shell: pwsh
+        run: |
+          choco install miktex --no-progress -y
+          $bin = "C:\Program Files\MiKTeX\miktex\bin\x64"
+          $bin | Out-File -FilePath $env:GITHUB_PATH -Append -Encoding utf8
+          & "$bin\initexmf.exe" --admin --set-config-value="[MPM]AutoInstall=1"
+          & "$bin\miktex.exe" --admin packages update-package-database
+          & "$bin\miktex.exe" --admin packages update
+          & "$bin\miktex.exe" --admin packages install latexmk
+          & "$bin\miktex.exe" --admin packages install biber
+
+      - uses: ./.github/actions/build-pdf
+        with:
+          language: ${{ matrix.language }}
+          artifact-name: main-miktex-Windows-${{ matrix.language }}
+
+  all-builds:
+    name: all builds passed
+    needs: [texlive, miktex]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fail unless every build succeeded
+        if: needs.texlive.result != 'success' || needs.miktex.result != 'success'
+        run: exit 1
