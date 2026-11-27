@@ -84,11 +84,16 @@ jobs:
           choco install miktex --no-progress -y
           $bin = "C:\Program Files\MiKTeX\miktex\bin\x64"
           $bin | Out-File -FilePath $env:GITHUB_PATH -Append -Encoding utf8
+          # The Chocolatey package installs from a temporary local repository
+          # that holds only the basic package set; point MiKTeX at CTAN so
+          # packages can be found and installed on first use.
+          & "$bin\initexmf.exe" --admin --set-config-value="[MPM]RepositoryType=remote"
+          & "$bin\initexmf.exe" --admin --set-config-value="[MPM]RemoteRepository=https://mirrors.ctan.org/systems/win32/miktex/tm/packages/"
           & "$bin\initexmf.exe" --admin --set-config-value="[MPM]AutoInstall=1"
           & "$bin\miktex.exe" --admin packages update-package-database
           & "$bin\miktex.exe" --admin packages update
           & "$bin\miktex.exe" --admin packages install latexmk
-          & "$bin\miktex.exe" --admin packages install biber
+          & "$bin\miktex.exe" --admin packages install biber-windows-x64
 
       - uses: ./.github/actions/build-pdf
         with:
