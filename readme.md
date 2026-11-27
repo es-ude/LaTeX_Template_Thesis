@@ -4,7 +4,7 @@ This repo contains a LaTeX template which is ready-to-use. For newbies, there ar
 ## Requirements
 A full TeX distribution, e.g. [TeX Live](https://tug.org/texlive/) / [MacTeX](https://tug.org/mactex/) or [MiKTeX](https://miktex.org/). It must include `latexmk` and `biber` (used by `biblatex` for the bibliography). Converting the EPS figures needs Ghostscript: MacTeX, MiKTeX and TeX Live on Windows bring their own; with TeX Live from tug.org on Linux or macOS, install it separately (e.g. `apt install ghostscript`, `brew install ghostscript`).
 
-Every pull request is built in English and German with TeX Live on Linux, macOS and Windows and with MiKTeX on Windows (`.github/workflows/build.yml`); the resulting PDFs can be downloaded from the run's artifacts.
+Every pull request is built in English and German with TeX Live on Linux, macOS and Windows and with MiKTeX on Windows (`.github/workflows/build.yml`); the resulting PDFs can be downloaded from the run's artifacts. Each published release gets the English and German PDF attached.
 
 ## Build
 The document is built with `pdflatex`, configured in `latexmkrc`. EPS figures (including the logos on the title page) are converted to PDF automatically. This needs the default *restricted* shell escape of TeX Live, MiKTeX and Overleaf; do not disable shell escape completely.
